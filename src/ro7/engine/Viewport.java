@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 
-import ro7.engine.sprites.EmptyRectangle;
+import ro7.engine.sprites.AAB;
 import cs195n.Vec2f;
 
 public class Viewport {
@@ -123,8 +123,8 @@ public class Viewport {
 	 * @param g Graphics object used to draw
 	 */
 	public void draw(Graphics2D g) {
-		EmptyRectangle viewport = new EmptyRectangle(position, dimensions,
-				Color.BLACK);
+		AAB viewport = new AAB(position,
+				Color.BLACK, null, dimensions);
 		viewport.draw(g);
 
 		Shape clip = g.getClip();

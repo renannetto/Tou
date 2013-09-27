@@ -1,20 +1,25 @@
 package ro7.engine.sprites;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.Rectangle2D;
+import java.util.List;
 
 import cs195n.Vec2f;
 
-public class AAB extends Shape {
+public class AAB extends SingleShape {
 
 	private Vec2f dimensions;
 
-	public AAB(Vec2f position, Vec2f dimensions) {
-		super(position);
+	public AAB(Vec2f position, Color borderColor,
+			Color fillColor, Vec2f dimensions) {
+		super(position, borderColor, fillColor);
 		this.dimensions = dimensions;
 	}
 
 	@Override
-	public boolean collides(Shape shape) {
+	public boolean collides(CollidingShape shape) {
 		return shape.collidesAAB(this);
 	}
 
@@ -58,22 +63,39 @@ public class AAB extends Shape {
 		Vec2f maxAAB = minThis.plus(aab.dimensions);
 
 		return minThis.x <= maxAAB.x && maxThis.x >= minAAB.x
-				&& minThis.y <= maxAAB.y && maxThis.y >= minAAB.y;		
+				&& minThis.y <= maxAAB.y && maxThis.y >= minAAB.y;
 	}
 
 	@Override
 	public boolean collidesCompoundShape(CompoundShape compound) {
+		List<CollidingShape> shapes = compound.getShapes();
+		for (CollidingShape shape : shapes) {
+			if (shape.collidesAAB(this)) {
+				return true;
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
-		// TODO Auto-generated method stub
+		Rectangle2D rectangle = new Rectangle2D.Float(position.x, position.y,
+				dimensions.x, dimensions.y);
 
+		g.setColor(borderColor);
+		g.draw(rectangle);
+
+		g.setColor(fillColor);
+		g.fill(rectangle);
 	}
 
 	public Vec2f getDimensions() {
 		return dimensions;
+	}
+
+	public Shape getShape() {
+		return new Rectangle2D.Float(position.x, position.y,
+				dimensions.x, dimensions.y);
 	}
 
 }

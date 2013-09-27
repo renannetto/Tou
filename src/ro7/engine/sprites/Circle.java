@@ -1,10 +1,9 @@
 package ro7.engine.sprites;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Stroke;
 import java.awt.geom.Ellipse2D;
+import java.util.List;
 
 import cs195n.Vec2f;
 
@@ -12,28 +11,21 @@ import cs195n.Vec2f;
  * @author ro7
  * Sprite that represents a colored circle
  */
-public class Circle extends Shape {
+public class Circle extends SingleShape {
 	
 	private float radius;
-	private Color borderColor;
-	private Color fillColor;
 
-	public Circle(Vec2f position, float radius, Color borderColor, Color fillColor) {
-		super(position);
+	public Circle(Vec2f position, Color borderColor, Color fillColor, float radius) {
+		super(position, borderColor, fillColor);
 		this.radius = radius;
-		this.borderColor = borderColor;
-		this.fillColor = fillColor;
 	}
 
 	@Override
 	public void draw(Graphics2D g) {		
 		Ellipse2D circle = new Ellipse2D.Float(position.x, position.y, radius, radius);
 		
-		Stroke oldStroke = g.getStroke();
 		g.setColor(borderColor);
-		g.setStroke(new BasicStroke(5.0f));
 		g.draw(circle);
-		g.setStroke(oldStroke);
 		
 		g.setColor(fillColor);
 		g.fill(circle);
@@ -48,7 +40,7 @@ public class Circle extends Shape {
 	}
 
 	@Override
-	public boolean collides(Shape shape) {
+	public boolean collides(CollidingShape shape) {
 		return shape.collidesCircle(this);
 	}
 
@@ -90,6 +82,12 @@ public class Circle extends Shape {
 
 	@Override
 	public boolean collidesCompoundShape(CompoundShape compound) {
+		List<CollidingShape> shapes = compound.getShapes();
+		for (CollidingShape shape : shapes) {
+			if (shape.collidesCircle(this)) {
+				return true;
+			}
+		}
 		return false;
 	}
 
