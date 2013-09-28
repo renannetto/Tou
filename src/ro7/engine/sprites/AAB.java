@@ -14,7 +14,7 @@ public class AAB extends SingleShape {
 
 	public AAB(Vec2f position, Color borderColor,
 			Color fillColor, Vec2f dimensions) {
-		super(position, borderColor, fillColor);
+		super(position.minus(dimensions.sdiv(2.0f)), borderColor, fillColor);
 		this.dimensions = dimensions;
 	}
 
@@ -60,7 +60,7 @@ public class AAB extends SingleShape {
 		Vec2f minThis = this.position;
 		Vec2f maxThis = minThis.plus(this.dimensions);
 		Vec2f minAAB = aab.position;
-		Vec2f maxAAB = minThis.plus(aab.dimensions);
+		Vec2f maxAAB = minAAB.plus(aab.dimensions);
 
 		return minThis.x <= maxAAB.x && maxThis.x >= minAAB.x
 				&& minThis.y <= maxAAB.y && maxThis.y >= minAAB.y;

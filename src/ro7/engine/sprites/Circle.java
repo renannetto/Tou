@@ -16,13 +16,13 @@ public class Circle extends SingleShape {
 	private float radius;
 
 	public Circle(Vec2f position, Color borderColor, Color fillColor, float radius) {
-		super(position, borderColor, fillColor);
+		super(position.minus(radius, radius), borderColor, fillColor);
 		this.radius = radius;
 	}
 
 	@Override
 	public void draw(Graphics2D g) {		
-		Ellipse2D circle = new Ellipse2D.Float(position.x, position.y, radius, radius);
+		Ellipse2D circle = new Ellipse2D.Float(position.x, position.y, 2.0f*radius, 2.0f*radius);
 		
 		g.setColor(borderColor);
 		g.draw(circle);

@@ -2,7 +2,7 @@ package ro7.engine.sprites;
 
 import java.awt.Graphics2D;
 
-import ro7.engine.Viewport;
+import ro7.engine.world.Viewport;
 import cs195n.Vec2f;
 
 /**

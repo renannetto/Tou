@@ -15,6 +15,7 @@ import ro7.engine.Screen;
 import ro7.engine.sprites.AAB;
 import ro7.engine.sprites.Circle;
 import ro7.engine.sprites.CollidingShape;
+import ro7.engine.sprites.CompoundShape;
 
 public class CollisionDebugScreen extends Screen {
 
@@ -27,8 +28,9 @@ public class CollisionDebugScreen extends Screen {
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
 		for (CollidingShape shapeA : shapes) {
+			shapeA.changeFillColor(Color.GREEN);
 			for (CollidingShape shapeB : shapes) {
-				if (shapeA.collides(shapeB)) {
+				if (!shapeA.equals(shapeB) && shapeA.collides(shapeB)) {
 					shapeA.changeFillColor(Color.RED);
 					shapeB.changeFillColor(Color.RED);
 				}
@@ -74,8 +76,11 @@ public class CollisionDebugScreen extends Screen {
 
 		CollidingShape shape;
 		if (button == 1) {
-			shape = new Circle(new Vec2f(point.x, point.y),
-					Color.GREEN, Color.GREEN, 50.0f);
+			//shape = new Circle(new Vec2f(point.x, point.y),
+				//	Color.GREEN, Color.GREEN, 30.0f);
+			Vec2f pointVector = new Vec2f(point.x, point.y);
+			shape = new CompoundShape(pointVector, new Circle(pointVector, Color.GREEN, Color.GREEN, 30.0f),
+					new AAB(new Vec2f(point.x, point.y+30.0f), Color.GREEN, Color.GREEN, new Vec2f(50.0f, 100.0f)));
 		} else {
 			shape = new AAB(new Vec2f(point.x, point.y),
 					Color.GREEN, Color.GREEN, new Vec2f(100.0f, 50.0f));

@@ -1,4 +1,4 @@
-package ro7.engine;
+package ro7.engine.world;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -11,11 +11,11 @@ public class Viewport {
 
 	private Vec2f position;
 	private Vec2f dimensions;
-	private GameSpace gameSpace;
+	private GameWorld gameSpace;
 	private Vec2f scale;
 	private Vec2f gamePosition;
 
-	public Viewport(Vec2f position, Vec2f dimensions, GameSpace gameSpace) {
+	public Viewport(Vec2f position, Vec2f dimensions, GameWorld gameSpace) {
 		this.position = position;
 		this.dimensions = dimensions;
 		this.gameSpace = gameSpace;
@@ -23,7 +23,7 @@ public class Viewport {
 		this.gamePosition = new Vec2f(0.0f, 0.0f);
 	}
 
-	public Viewport(Vec2f position, Vec2f dimensions, GameSpace gameSpace,
+	public Viewport(Vec2f position, Vec2f dimensions, GameWorld gameSpace,
 			Vec2f scale, Vec2f gamePosition) {
 		this.position = position;
 		this.dimensions = dimensions;
@@ -123,7 +123,7 @@ public class Viewport {
 	 * @param g Graphics object used to draw
 	 */
 	public void draw(Graphics2D g) {
-		AAB viewport = new AAB(position,
+		AAB viewport = new AAB(position.plus(dimensions.sdiv(2.0f)),
 				Color.BLACK, null, dimensions);
 		viewport.draw(g);
 
