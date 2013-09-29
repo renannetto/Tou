@@ -6,32 +6,30 @@ import ro7.engine.sprites.CollidingShape;
 import ro7.engine.world.Collidable;
 import ro7.engine.world.Direction;
 import ro7.engine.world.GameWorld;
-import ro7.game.sprites.SlowBulletSprite;
+import ro7.game.sprites.EnemySquareSprite;
 import cs195n.Vec2f;
 
-public class SlowBullet extends Bullet {
-	
-	private final static float VELOCITY = 50;
-	private final float DAMAGE = 100;
-	
-	private SlowBulletSprite sprite;
-	
-	public SlowBullet(GameWorld world, Vec2f position, Direction direction) {
-		super(world, position, VELOCITY, direction);
-		sprite = new SlowBulletSprite(position);
-	}
+public class EnemySquare extends Enemy {
 
+	private EnemySquareSprite sprite;
+
+	public EnemySquare(GameWorld world, Vec2f position, Direction direction) {
+		super(world, position, direction);
+		
+		this.sprite = new EnemySquareSprite(position);
+	}
+	
 	@Override
 	public void update(long nanoseconds) {
-		super.update(nanoseconds); 
-		sprite = new SlowBulletSprite(position);
+		super.update(nanoseconds);
+		sprite = new EnemySquareSprite(position);
 	}
-
+	
 	@Override
 	public void draw(Graphics2D g) {
 		sprite.draw(g);
 	}
-	
+
 	@Override
 	public boolean collides(Collidable other) {
 		return sprite.collides(other);
@@ -40,11 +38,6 @@ public class SlowBullet extends Bullet {
 	@Override
 	public CollidingShape getShape() {
 		return sprite.getShape();
-	}
-	
-	@Override
-	public float getDamage() {
-		return DAMAGE;
 	}
 
 }

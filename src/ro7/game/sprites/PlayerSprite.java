@@ -6,10 +6,12 @@ import java.awt.Graphics2D;
 import cs195n.Vec2f;
 import ro7.engine.sprites.AAB;
 import ro7.engine.sprites.Circle;
+import ro7.engine.sprites.CollidingShape;
 import ro7.engine.sprites.CompoundShape;
 import ro7.engine.sprites.Sprite;
+import ro7.engine.world.Collidable;
 
-public class PlayerSprite extends Sprite {
+public class PlayerSprite extends Sprite implements Collidable {
 
 	private final float CENTER_RADIUS = 10.0f;
 	private final Vec2f WING_DIMENSIONS = new Vec2f(20.0f, 20.0f);
@@ -33,6 +35,16 @@ public class PlayerSprite extends Sprite {
 	@Override
 	public void draw(Graphics2D g) {
 		sprite.draw(g);
+	}
+
+	@Override
+	public boolean collides(Collidable other) {
+		return sprite.collides(other.getShape());
+	}
+
+	@Override
+	public CollidingShape getShape() {
+		return sprite;
 	}
 
 }

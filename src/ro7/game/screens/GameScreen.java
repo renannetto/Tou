@@ -20,10 +20,10 @@ import cs195n.Vec2f;
 import cs195n.Vec2i;
 
 public class GameScreen extends Screen {
-	
+
 	private Viewport viewport;
 	private TouWorld world;
-	
+
 	private Set<Integer> pressedKeys;
 
 	public GameScreen(Application app) {
@@ -33,7 +33,14 @@ public class GameScreen extends Screen {
 
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
-		world.update(nanosSincePreviousTick);
+		try {
+			world.update(nanosSincePreviousTick);
+			if (world.lost()) {
+				app.popScreen();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -44,13 +51,13 @@ public class GameScreen extends Screen {
 	@Override
 	public void onKeyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onKeyPressed(KeyEvent e) {
 		pressedKeys.add(e.getKeyCode());
-		
+
 		for (int keyCode : pressedKeys) {
 			switch (keyCode) {
 			case 32:
@@ -92,46 +99,46 @@ public class GameScreen extends Screen {
 	@Override
 	public void onMouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onMousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onMouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onMouseDragged(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onMouseMoved(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onMouseWheelMoved(MouseWheelEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public void onResize(Vec2i newSize) {
 		super.onResize(newSize);
 
 		try {
 			world = new TouWorld(new Vec2f(windowSize.x, windowSize.y));
-			
+
 			if (viewport != null) {
 				Vec2f gamePosition = viewport.getGamePosition();
 				Vec2f scale = viewport.getScale();
@@ -139,8 +146,8 @@ public class GameScreen extends Screen {
 						windowSize.x, windowSize.y), world, scale, gamePosition);
 			} else {
 				viewport = new Viewport(new Vec2f(0.0f, 0.0f), new Vec2f(
-						windowSize.x, windowSize.y), world,
-						new Vec2f(1.0f, 1.0f), new Vec2f(0.0f, 0.0f));
+						windowSize.x, windowSize.y), world, new Vec2f(1.0f,
+						1.0f), new Vec2f(0.0f, 0.0f));
 			}
 		} catch (NullPointerException e) {
 			System.out.println("No window size defined");
