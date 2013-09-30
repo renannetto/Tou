@@ -1,0 +1,19 @@
+Tou I README
+
+Engine requirements:
+ - Collision Detection: the ro7.engine.sprites package contains classes to AAB, Circle and CompoundShape. These classes extend CollidingShape and implement their collision detection. Detection is done using double dispatch.
+ - Compound Shapes: the CompoundShape class on ro7.engine.sprites receives any number of CollidingShapes, which can be an AAB, Circl or CompoundShape.
+ - World Objects: the ro7.engine.world package contains GameWorld and Entity classes. The GameWorld class has a list of Entities that are updated and draw on each update and raw events.
+ - Free Movement: the MovingEntity class on ro7.engine.world represents an Entity that moves freely on a given direction and with a fixed velocity. It is also possible to use the Entity class to create an entity that moves freely.
+ - Velocity: the MovingEntity instances move with fixed velocity.
+
+Game requirements: 
+ - Collisions: the game make use of circle-circle, circle-AAB and AAB-AAB collisions with the collision detection between bullets and enemies.
+ - Compound shapes: the player ship is a compound shape, and compound shape collision is detected when the player is shooted.
+ - The player is a freely movable unit, moved using the WASD keys. It is possible to shoot two kinds of bullets to damage enemies.
+ - Enemies spawn at regular intervals in a random position.
+ - Game area is limited by the screen
+
+Approximate hours: 8 hours
+
+Known bugs: no known bugs

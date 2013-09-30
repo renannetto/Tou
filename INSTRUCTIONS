@@ -1,0 +1,17 @@
+Tou I instructions
+
+Title screen:
+ - Press enter to start the game
+
+Game screen:
+ - Move the player using the WASD keys:
+   - W: move up
+   - A: move left
+   - S: move down
+   - D: move right
+ - Shoot using JIKL keys:
+   - I: shoot up
+   - J: shoot left
+   - K: shoot down
+   - L: shoot right
+ - Change shoot type pressing space. One shot is fast and do less damage. The other one is slow but do more damage.
