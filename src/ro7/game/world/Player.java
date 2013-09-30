@@ -5,7 +5,6 @@ import java.awt.Graphics2D;
 
 import ro7.engine.sprites.CollidingShape;
 import ro7.engine.world.Collidable;
-import ro7.engine.world.Direction;
 import ro7.engine.world.Entity;
 import ro7.engine.world.GameWorld;
 import ro7.game.sprites.PlayerSprite;
@@ -18,7 +17,6 @@ public class Player extends Entity implements Collidable {
 	private final Color FAST_BULLET_COLOR = Color.GREEN;
 	private final Color SLOW_BULLET_COLOR = Color.BLUE;
 
-	private Vec2f position;
 	private PlayerSprite sprite;
 	private float lifepoints;
 
@@ -26,8 +24,7 @@ public class Player extends Entity implements Collidable {
 	private float elapsedShootTime;
 
 	public Player(GameWorld world, Vec2f position) {
-		super(world);
-		this.position = position;
+		super(world, position);
 		sprite = new PlayerSprite(position);
 		fastShoot = true;
 		this.lifepoints = 100;
@@ -37,24 +34,10 @@ public class Player extends Entity implements Collidable {
 		sprite.draw(g);
 	}
 
-	public void move(Direction direction) {
-		Vec2f translate = new Vec2f(0.0f, 0.0f);
-		switch (direction) {
-		case LEFT:
-			translate = new Vec2f(-MOVE_FACTOR, 0.0f);
-			break;
-		case UP:
-			translate = new Vec2f(0.0f, -MOVE_FACTOR);
-			break;
-		case RIGHT:
-			translate = new Vec2f(MOVE_FACTOR, 0.0f);
-			break;
-		case DOWN:
-			translate = new Vec2f(0.0f, MOVE_FACTOR);
-			break;
-		}
-		position = position.plus(translate);
+	public void move(Vec2f direction) {
+		position = position.plus(direction.smult(MOVE_FACTOR));
 		sprite = new PlayerSprite(position);
+		insideWorld();
 	}
 
 	@Override
@@ -93,6 +76,10 @@ public class Player extends Entity implements Collidable {
 	
 	public boolean isAlive() {
 		return lifepoints > 0;
+	}
+
+	public void kill() {
+		lifepoints = 0;
 	}
 
 }

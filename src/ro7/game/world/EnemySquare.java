@@ -11,12 +11,12 @@ import cs195n.Vec2f;
 
 public class EnemySquare extends Enemy {
 	
-	private final Color BULLET_COLOR = Color.MAGENTA;
+	private final Color BULLET_COLOR = Color.ORANGE;
 
 	private EnemySquareSprite sprite;
 
-	public EnemySquare(GameWorld world, Vec2f position, Vec2f direction) {
-		super(world, position, direction);
+	public EnemySquare(GameWorld world, Vec2f position) {
+		super(world, position);
 		
 		this.sprite = new EnemySquareSprite(position);
 	}
@@ -41,10 +41,11 @@ public class EnemySquare extends Enemy {
 	public CollidingShape getShape() {
 		return sprite.getShape();
 	}
-	
+
 	@Override
-	protected Color getBulletColor() {
-		return BULLET_COLOR;
+	protected void shoot() {
+		Bullet bullet = new SlowBullet(world, position, BULLET_COLOR, direction);
+		((TouWorld)world).enemyShoot(bullet);
 	}
 
 }

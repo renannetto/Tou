@@ -11,7 +11,7 @@ import cs195n.Vec2f;
 
 public class SlowBullet extends Bullet {
 	
-	private final static float VELOCITY = 50;
+	private final static float VELOCITY = 100;
 	private final float DAMAGE = 100;
 	
 	private SlowBulletSprite sprite;

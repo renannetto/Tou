@@ -12,8 +12,8 @@ public class AAB extends SingleShape {
 
 	private Vec2f dimensions;
 
-	public AAB(Vec2f position, Color borderColor,
-			Color fillColor, Vec2f dimensions) {
+	public AAB(Vec2f position, Color borderColor, Color fillColor,
+			Vec2f dimensions) {
 		super(position.minus(dimensions.sdiv(2.0f)), borderColor, fillColor);
 		this.dimensions = dimensions;
 	}
@@ -85,8 +85,10 @@ public class AAB extends SingleShape {
 		g.setColor(borderColor);
 		g.draw(rectangle);
 
-		g.setColor(fillColor);
-		g.fill(rectangle);
+		if (fillColor != null) {
+			g.setColor(fillColor);
+			g.fill(rectangle);
+		}
 	}
 
 	public Vec2f getDimensions() {
@@ -94,8 +96,8 @@ public class AAB extends SingleShape {
 	}
 
 	public Shape getShape() {
-		return new Rectangle2D.Float(position.x, position.y,
-				dimensions.x, dimensions.y);
+		return new Rectangle2D.Float(position.x, position.y, dimensions.x,
+				dimensions.y);
 	}
 
 }

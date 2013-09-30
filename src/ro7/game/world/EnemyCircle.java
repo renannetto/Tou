@@ -15,8 +15,8 @@ public class EnemyCircle extends Enemy {
 	
 	private EnemyCircleSprite sprite;
 
-	public EnemyCircle(GameWorld world, Vec2f position, Vec2f direction) {
-		super(world, position, direction);
+	public EnemyCircle(GameWorld world, Vec2f position) {
+		super(world, position);
 		
 		this.sprite = new EnemyCircleSprite(position);
 	}
@@ -43,8 +43,9 @@ public class EnemyCircle extends Enemy {
 	}
 
 	@Override
-	protected Color getBulletColor() {
-		return BULLET_COLOR;
+	protected void shoot() {
+		Bullet bullet = new FastBullet(world, position, BULLET_COLOR, direction);
+		((TouWorld)world).enemyShoot(bullet);
 	}
 
 }

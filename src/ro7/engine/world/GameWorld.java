@@ -38,5 +38,9 @@ public abstract class GameWorld {
 	public Vec2f getDimensions() {
 		return dimensions;
 	}
+	
+	public void resize(Vec2f newSize) {
+		dimensions = new Vec2f(newSize.x, newSize.y);
+	}
 
 }

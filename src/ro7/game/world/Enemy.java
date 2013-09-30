@@ -1,7 +1,5 @@
 package ro7.game.world;
 
-import java.awt.Color;
-
 import ro7.engine.world.Collidable;
 import ro7.engine.world.GameWorld;
 import ro7.engine.world.MovingEntity;
@@ -18,8 +16,8 @@ public abstract class Enemy extends MovingEntity implements Collidable {
 	private float elapsedMovingTime;
 	private float elapsedShootingTime;
 
-	public Enemy(GameWorld world, Vec2f position, Vec2f direction) {
-		super(world, position, VELOCITY, direction);
+	public Enemy(GameWorld world, Vec2f position) {
+		super(world, position, VELOCITY);
 		this.lifepoints = 100;
 	}
 
@@ -38,17 +36,10 @@ public abstract class Enemy extends MovingEntity implements Collidable {
 		}
 	}
 	
-	private void shoot() {
-		Bullet bullet = new FastBullet(world, position, getBulletColor(), direction);
-		((TouWorld)world).enemyShoot(bullet);
-	}
-	
-	protected abstract Color getBulletColor();
+	protected abstract void shoot();
 
 	public void changeDirection() {
-		float dirX = -1 + (float)(Math.random()*3);
-		float dirY = -1 + (float)(Math.random()*3);
-		direction = new Vec2f(dirX, dirY);
+		direction = newDirection();
 	}
 
 	public void shooted(Bullet bullet) {
@@ -58,5 +49,7 @@ public abstract class Enemy extends MovingEntity implements Collidable {
 	public boolean isAlive() {
 		return lifepoints > 0;
 	}
+	
+	
 
 }

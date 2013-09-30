@@ -6,14 +6,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ro7.engine.world.Direction;
 import ro7.engine.world.GameWorld;
 import ro7.engine.world.Viewport;
+import ro7.game.sprites.TouBackground;
 import cs195n.Vec2f;
 
 public class TouWorld extends GameWorld {
 
 	private final int ENEMY_CREATION_TIME = 5;
+	
+	private TouBackground background;
 
 	private Player player;
 	private Set<Bullet> playerBullets;
@@ -26,6 +28,10 @@ public class TouWorld extends GameWorld {
 
 	public TouWorld(Vec2f dimensions) {
 		super(dimensions);
+		
+		background = new TouBackground(this, dimensions.sdiv(2.0f), dimensions);
+		entities.add(background);
+		
 		player = new Player(this, dimensions.sdiv(2));
 		entities.add(player);
 
@@ -52,7 +58,6 @@ public class TouWorld extends GameWorld {
 		checkAlive();
 
 		for (Bullet bullet : removeShoot) {
-			// entities.remove(entities.indexOf(bullet));
 			playerBullets.remove(bullet);
 			enemyBullets.remove(bullet);
 		}
@@ -82,6 +87,10 @@ public class TouWorld extends GameWorld {
 			enemies.remove(enemy);
 			entities.remove(entities.indexOf(enemy));
 		}
+
+		if (!player.isAlive() && entities.contains(player)) {
+			entities.remove(entities.indexOf(player));
+		}
 	}
 
 	private void checkCollisions() {
@@ -94,10 +103,12 @@ public class TouWorld extends GameWorld {
 			}
 		}
 
-		for (Bullet bullet : enemyBullets) {
-			if (bullet.collides(player)) {
-				player.shooted(bullet);
-				removeShoot(bullet);
+		if (player.isAlive()) {
+			for (Bullet bullet : enemyBullets) {
+				if (bullet.collides(player)) {
+					player.shooted(bullet);
+					removeShoot(bullet);
+				}
 			}
 		}
 	}
@@ -107,42 +118,41 @@ public class TouWorld extends GameWorld {
 		if (elapsedTime > ENEMY_CREATION_TIME && enemies.size() < 10) {
 			Vec2f position = new Vec2f((float) (Math.random() * dimensions.x),
 					(float) (Math.random() * dimensions.y));
-			
-			//TODO: Direction can not be (0, 0)
-			float dirX = -1 + (float)(Math.random()*3);
-			float dirY = -1 + (float)(Math.random()*3);
-			Vec2f direction = new Vec2f(dirX, dirY);
-			Enemy enemy = new EnemyCircle(this, position, direction);
+
+			Enemy enemy = new EnemyCircle(this, position);
 			enemies.add(enemy);
 			entities.add(enemy);
-			
+
 			position = new Vec2f((float) (Math.random() * dimensions.x),
 					(float) (Math.random() * dimensions.y));
-			dirX = -1 + (int)(Math.random()*3);
-			dirY = -1 + (int)(Math.random()*3);
-			direction = new Vec2f(dirX, dirY);
-			enemy = new EnemySquare(this, position, direction);
+
+			enemy = new EnemySquare(this, position);
 			enemies.add(enemy);
 			entities.add(enemy);
-			
+
 			elapsedTime = 0;
 		}
 	}
 
-	public void movePlayer(Direction direction) {
-		player.move(direction);
+	public void movePlayer(Vec2f direction) {
+		if (player.isAlive()) {
+			player.move(direction);
+		}
 	}
 
 	public void shoot(Vec2f direction) {
-		Bullet bullet = player.shoot(direction);
-		if (bullet != null) {
-			// entities.add(bullet);
-			playerBullets.add(bullet);
+		if (player.isAlive()) {
+			Bullet bullet = player.shoot(direction);
+			if (bullet != null) {
+				playerBullets.add(bullet);
+			}
 		}
 	}
 
 	public void changeWeapon() {
-		player.changeWeapon();
+		if (player.isAlive()) {
+			player.changeWeapon();
+		}
 	}
 
 	public void removeShoot(Bullet bullet) {
@@ -150,12 +160,19 @@ public class TouWorld extends GameWorld {
 	}
 
 	public void enemyShoot(Bullet bullet) {
-		// entities.add(bullet);
 		enemyBullets.add(bullet);
 	}
 
 	public boolean lost() {
 		return !player.isAlive();
+	}
+	
+	@Override
+	public void resize(Vec2f newSize) {
+		super.resize(newSize);
+		entities.remove(entities.indexOf(background));
+		background = new TouBackground(this, dimensions.sdiv(2.0f), dimensions);
+		entities.add(0, background);
 	}
 
 }
