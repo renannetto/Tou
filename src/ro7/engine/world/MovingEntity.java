@@ -7,9 +7,9 @@ public abstract class MovingEntity extends Entity {
 	
 	protected Vec2f position;
 	protected float velocity;
-	protected Direction direction;
+	protected Vec2f direction;
 	
-	protected MovingEntity(GameWorld world, Vec2f position, float velocity, Direction direction) {
+	protected MovingEntity(GameWorld world, Vec2f position, float velocity, Vec2f direction) {
 		super(world);
 		this.position = position;
 		this.velocity = velocity;
@@ -21,20 +21,9 @@ public abstract class MovingEntity extends Entity {
 		Vec2f min = new Vec2f(0.0f, 0.0f);
 		Vec2f max = world.getDimensions();
 		float seconds = nanoseconds/1000000000.0f;
-		switch (direction) {
-		case LEFT:
-			position = position.plus(-velocity*seconds, 0.0f);
-			break;
-		case UP:
-			position = position.plus(0.0f, -velocity*seconds);
-			break;
-		case RIGHT:
-			position = position.plus(velocity*seconds, 0.0f);
-			break;
-		case DOWN:
-			position = position.plus(0.0f, velocity*seconds);
-			break;
-		}
+		
+		//TODO: fix when direction < 1
+		position = position.plus(direction.smult(velocity*seconds));
 		
 		if (position.x < min.x) {
 			position = new Vec2f(min.x, position.y);

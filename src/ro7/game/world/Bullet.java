@@ -1,15 +1,19 @@
 package ro7.game.world;
 
+import java.awt.Color;
+
 import ro7.engine.world.Collidable;
-import ro7.engine.world.Direction;
 import ro7.engine.world.GameWorld;
 import ro7.engine.world.MovingEntity;
 import cs195n.Vec2f;
 
 public abstract class Bullet extends MovingEntity implements Collidable {
+	
+	protected Color color;
 
-	protected Bullet(GameWorld world, Vec2f position, float velocity, Direction direction) {
+	protected Bullet(GameWorld world, Vec2f position, Color color, float velocity, Vec2f direction) {
 		super(world, position, velocity, direction);
+		this.color = color;
 	}
 	
 	@Override

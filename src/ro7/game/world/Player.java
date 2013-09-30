@@ -1,5 +1,6 @@
 package ro7.game.world;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 import ro7.engine.sprites.CollidingShape;
@@ -14,6 +15,8 @@ public class Player extends Entity implements Collidable {
 
 	private final float SHOOT_DELAY = 0.5f;
 	private final float MOVE_FACTOR = 10.0f;
+	private final Color FAST_BULLET_COLOR = Color.GREEN;
+	private final Color SLOW_BULLET_COLOR = Color.BLUE;
 
 	private Vec2f position;
 	private PlayerSprite sprite;
@@ -63,15 +66,15 @@ public class Player extends Entity implements Collidable {
 		fastShoot = !fastShoot;
 	}
 
-	public Bullet shoot(Direction direction) {
+	public Bullet shoot(Vec2f direction) {
 		if (elapsedShootTime < SHOOT_DELAY) {
 			return null;
 		}
 		elapsedShootTime = 0;
 		if (fastShoot) {
-			return new FastBullet((TouWorld)world, position, direction);
+			return new FastBullet((TouWorld)world, position, FAST_BULLET_COLOR, direction);
 		}
-		return new SlowBullet((TouWorld)world, position, direction);
+		return new SlowBullet((TouWorld)world, position, SLOW_BULLET_COLOR, direction);
 	}
 
 	@Override

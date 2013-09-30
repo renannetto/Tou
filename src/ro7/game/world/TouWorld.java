@@ -1,7 +1,5 @@
 package ro7.game.world;
 
-import static ro7.engine.world.Direction.*;
-
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -109,28 +107,24 @@ public class TouWorld extends GameWorld {
 		if (elapsedTime > ENEMY_CREATION_TIME && enemies.size() < 10) {
 			Vec2f position = new Vec2f((float) (Math.random() * dimensions.x),
 					(float) (Math.random() * dimensions.y));
-			int intDirection = (int) Math.random() * 4;
-			Direction direction = LEFT;
-			switch (intDirection) {
-			case 0:
-				direction = LEFT;
-				break;
-			case 1:
-				direction = UP;
-				break;
-			case 2:
-				direction = RIGHT;
-				break;
-			case 3:
-				direction = DOWN;
-				break;
-			}
+			
+			//TODO: Direction can not be (0, 0)
+			float dirX = -1 + (float)(Math.random()*3);
+			float dirY = -1 + (float)(Math.random()*3);
+			Vec2f direction = new Vec2f(dirX, dirY);
 			Enemy enemy = new EnemyCircle(this, position, direction);
 			enemies.add(enemy);
 			entities.add(enemy);
+			
+			position = new Vec2f((float) (Math.random() * dimensions.x),
+					(float) (Math.random() * dimensions.y));
+			dirX = -1 + (int)(Math.random()*3);
+			dirY = -1 + (int)(Math.random()*3);
+			direction = new Vec2f(dirX, dirY);
 			enemy = new EnemySquare(this, position, direction);
 			enemies.add(enemy);
 			entities.add(enemy);
+			
 			elapsedTime = 0;
 		}
 	}
@@ -139,7 +133,7 @@ public class TouWorld extends GameWorld {
 		player.move(direction);
 	}
 
-	public void shoot(Direction direction) {
+	public void shoot(Vec2f direction) {
 		Bullet bullet = player.shoot(direction);
 		if (bullet != null) {
 			// entities.add(bullet);

@@ -1,10 +1,10 @@
 package ro7.game.world;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 import ro7.engine.sprites.CollidingShape;
 import ro7.engine.world.Collidable;
-import ro7.engine.world.Direction;
 import ro7.engine.world.GameWorld;
 import ro7.game.sprites.FastBulletSprite;
 import cs195n.Vec2f;
@@ -16,15 +16,15 @@ public class FastBullet extends Bullet {
 	
 	private FastBulletSprite sprite;
 	
-	public FastBullet(GameWorld world, Vec2f position, Direction direction) {
-		super(world, position, VELOCITY, direction);
-		sprite = new FastBulletSprite(position);
+	public FastBullet(GameWorld world, Vec2f position, Color color, Vec2f direction) {
+		super(world, position, color, VELOCITY, direction);
+		sprite = new FastBulletSprite(position, color);
 	}
 
 	@Override
 	public void update(long nanoseconds) {
 		super.update(nanoseconds); 
-		sprite = new FastBulletSprite(position);
+		sprite = new FastBulletSprite(position, color);
 	}
 
 	@Override

@@ -1,11 +1,8 @@
 package ro7.game.world;
 
-import static ro7.engine.world.Direction.DOWN;
-import static ro7.engine.world.Direction.LEFT;
-import static ro7.engine.world.Direction.RIGHT;
-import static ro7.engine.world.Direction.UP;
+import java.awt.Color;
+
 import ro7.engine.world.Collidable;
-import ro7.engine.world.Direction;
 import ro7.engine.world.GameWorld;
 import ro7.engine.world.MovingEntity;
 import cs195n.Vec2f;
@@ -21,7 +18,7 @@ public abstract class Enemy extends MovingEntity implements Collidable {
 	private float elapsedMovingTime;
 	private float elapsedShootingTime;
 
-	public Enemy(GameWorld world, Vec2f position, Direction direction) {
+	public Enemy(GameWorld world, Vec2f position, Vec2f direction) {
 		super(world, position, VELOCITY, direction);
 		this.lifepoints = 100;
 	}
@@ -42,26 +39,16 @@ public abstract class Enemy extends MovingEntity implements Collidable {
 	}
 	
 	private void shoot() {
-		Bullet bullet = new FastBullet(world, position, direction);
+		Bullet bullet = new FastBullet(world, position, getBulletColor(), direction);
 		((TouWorld)world).enemyShoot(bullet);
 	}
+	
+	protected abstract Color getBulletColor();
 
 	public void changeDirection() {
-		int newDirection = (int) (Math.random() * 4);
-		switch (newDirection) {
-		case 0:
-			direction = LEFT;
-			break;
-		case 1:
-			direction = UP;
-			break;
-		case 2:
-			direction = RIGHT;
-			break;
-		case 3:
-			direction = DOWN;
-			break;
-		}
+		float dirX = -1 + (float)(Math.random()*3);
+		float dirY = -1 + (float)(Math.random()*3);
+		direction = new Vec2f(dirX, dirY);
 	}
 
 	public void shooted(Bullet bullet) {

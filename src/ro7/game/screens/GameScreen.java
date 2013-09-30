@@ -64,16 +64,16 @@ public class GameScreen extends Screen {
 				world.changeWeapon();
 				break;
 			case 73:
-				world.shoot(UP);
+				world.shoot(new Vec2f(0.0f, -1.0f));
 				break;
 			case 74:
-				world.shoot(LEFT);
+				world.shoot(new Vec2f(-1.0f, 0.0f));
 				break;
 			case 75:
-				world.shoot(DOWN);
+				world.shoot(new Vec2f(0.0f, 1.0f));
 				break;
 			case 76:
-				world.shoot(RIGHT);
+				world.shoot(new Vec2f(1.0f, 0.0f));
 				break;
 			case 65:
 				world.movePlayer(LEFT);

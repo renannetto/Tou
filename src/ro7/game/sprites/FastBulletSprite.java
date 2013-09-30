@@ -12,13 +12,12 @@ import ro7.engine.world.Collidable;
 public class FastBulletSprite extends Sprite implements Collidable {
 	
 	private final Vec2f SIZE = new Vec2f(10.0f, 5.0f);
-	private final Color COLOR = Color.GREEN;
 	
 	private AAB sprite;
 
-	public FastBulletSprite(Vec2f position) {
+	public FastBulletSprite(Vec2f position, Color color) {
 		super(position);
-		sprite = new AAB(position, COLOR, COLOR, SIZE);
+		sprite = new AAB(position, color, color, SIZE);
 	}
 
 	@Override

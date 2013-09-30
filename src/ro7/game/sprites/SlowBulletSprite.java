@@ -12,13 +12,12 @@ import ro7.engine.world.Collidable;
 public class SlowBulletSprite extends Sprite implements Collidable {
 	
 	private final float RADIUS = 5.0f;
-	private final Color COLOR = Color.BLUE;
 	
 	private Circle sprite;
 
-	public SlowBulletSprite(Vec2f position) {
+	public SlowBulletSprite(Vec2f position, Color color) {
 		super(position);
-		sprite = new Circle(position, COLOR, COLOR, RADIUS);
+		sprite = new Circle(position, color, color, RADIUS);
 	}
 
 	@Override

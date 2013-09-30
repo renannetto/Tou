@@ -1,10 +1,10 @@
 package ro7.game.world;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 import ro7.engine.sprites.CollidingShape;
 import ro7.engine.world.Collidable;
-import ro7.engine.world.Direction;
 import ro7.engine.world.GameWorld;
 import ro7.game.sprites.SlowBulletSprite;
 import cs195n.Vec2f;
@@ -16,15 +16,15 @@ public class SlowBullet extends Bullet {
 	
 	private SlowBulletSprite sprite;
 	
-	public SlowBullet(GameWorld world, Vec2f position, Direction direction) {
-		super(world, position, VELOCITY, direction);
-		sprite = new SlowBulletSprite(position);
+	public SlowBullet(GameWorld world, Vec2f position, Color color, Vec2f direction) {
+		super(world, position, color, VELOCITY, direction);
+		sprite = new SlowBulletSprite(position, color);
 	}
 
 	@Override
 	public void update(long nanoseconds) {
 		super.update(nanoseconds); 
-		sprite = new SlowBulletSprite(position);
+		sprite = new SlowBulletSprite(position, color);
 	}
 
 	@Override
