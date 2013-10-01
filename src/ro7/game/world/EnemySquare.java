@@ -47,5 +47,11 @@ public class EnemySquare extends Enemy {
 		Bullet bullet = new SlowBullet(world, position, BULLET_COLOR, direction);
 		((TouWorld)world).enemyShoot(bullet);
 	}
+	
+	@Override
+	public void insideWorld() {
+		super.insideWorld();
+		sprite = new EnemySquareSprite(position);
+	}
 
 }

@@ -47,5 +47,11 @@ public class EnemyCircle extends Enemy {
 		Bullet bullet = new FastBullet(world, position, BULLET_COLOR, direction);
 		((TouWorld)world).enemyShoot(bullet);
 	}
+	
+	@Override
+	public void insideWorld() {
+		super.insideWorld();
+		sprite = new EnemyCircleSprite(position);
+	}
 
 }

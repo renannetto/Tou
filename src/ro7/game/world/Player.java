@@ -81,5 +81,11 @@ public class Player extends Entity implements Collidable {
 	public void kill() {
 		lifepoints = 0;
 	}
+	
+	@Override
+	public void insideWorld() {
+		super.insideWorld();
+		sprite = new PlayerSprite(position);
+	}
 
 }

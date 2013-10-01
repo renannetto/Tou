@@ -173,6 +173,7 @@ public class TouWorld extends GameWorld {
 		entities.remove(entities.indexOf(background));
 		background = new TouBackground(this, dimensions.sdiv(2.0f), dimensions);
 		entities.add(0, background);
+		player.insideWorld();
 	}
 
 }

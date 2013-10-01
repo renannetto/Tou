@@ -18,7 +18,7 @@ public abstract class Entity {
 	
 	public abstract void draw(Graphics2D g);
 	
-	protected void insideWorld() {
+	public void insideWorld() {
 		Vec2f min = new Vec2f(0.0f, 0.0f);
 		Vec2f max = world.getDimensions();
 		
