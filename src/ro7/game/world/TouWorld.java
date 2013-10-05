@@ -14,7 +14,7 @@ import cs195n.Vec2f;
 public class TouWorld extends GameWorld {
 
 	private final int ENEMY_CREATION_TIME = 5;
-	
+
 	private TouBackground background;
 
 	private Player player;
@@ -28,10 +28,10 @@ public class TouWorld extends GameWorld {
 
 	public TouWorld(Vec2f dimensions) {
 		super(dimensions);
-		
+
 		background = new TouBackground(this, dimensions.sdiv(2.0f), dimensions);
 		entities.add(background);
-		
+
 		player = new Player(this, dimensions.sdiv(2));
 		entities.add(player);
 
@@ -140,6 +140,12 @@ public class TouWorld extends GameWorld {
 		}
 	}
 
+	public void stopPlayer(Vec2f direction) {
+		if (player.isAlive()) {
+			player.stop(direction);
+		}
+	}
+
 	public void shoot(Vec2f direction) {
 		if (player.isAlive()) {
 			Bullet bullet = player.shoot(direction);
@@ -166,7 +172,7 @@ public class TouWorld extends GameWorld {
 	public boolean lost() {
 		return !player.isAlive();
 	}
-	
+
 	@Override
 	public void resize(Vec2f newSize) {
 		super.resize(newSize);

@@ -12,7 +12,7 @@ public abstract class Bullet extends MovingEntity implements Collidable {
 	protected Color color;
 
 	protected Bullet(GameWorld world, Vec2f position, Color color, float velocity, Vec2f direction) {
-		super(world, position, velocity, direction);
+		super(world, position, velocity, direction, true);
 		this.color = color;
 	}
 	

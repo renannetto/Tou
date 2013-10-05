@@ -17,7 +17,7 @@ public abstract class Enemy extends MovingEntity implements Collidable {
 	private float elapsedShootingTime;
 
 	public Enemy(GameWorld world, Vec2f position) {
-		super(world, position, VELOCITY);
+		super(world, position, VELOCITY, true);
 		this.lifepoints = 100;
 	}
 

@@ -75,25 +75,44 @@ public class GameScreen extends Screen {
 			case 76:
 				world.shoot(new Vec2f(1.0f, 0.0f));
 				break;
-			case 65:
-				world.movePlayer(new Vec2f(-1.0f, 0.0f));
-				break;
-			case 87:
-				world.movePlayer(new Vec2f(0.0f, -1.0f));
-				break;
-			case 68:
-				world.movePlayer(new Vec2f(1.0f, 0.0f));
-				break;
-			case 83:
-				world.movePlayer(new Vec2f(0.0f, 1.0f));
-				break;
 			}
+		}
+
+		int keyCode = e.getKeyCode();
+		switch (keyCode) {
+		case 65:
+			world.movePlayer(new Vec2f(-1.0f, 0.0f));
+			break;
+		case 87:
+			world.movePlayer(new Vec2f(0.0f, -1.0f));
+			break;
+		case 68:
+			world.movePlayer(new Vec2f(1.0f, 0.0f));
+			break;
+		case 83:
+			world.movePlayer(new Vec2f(0.0f, 1.0f));
+			break;
 		}
 	}
 
 	@Override
 	public void onKeyReleased(KeyEvent e) {
-		pressedKeys.remove(e.getKeyCode());
+		int keyCode = e.getKeyCode();
+		pressedKeys.remove(keyCode);
+
+		switch (keyCode) {
+		case 65:
+			world.stopPlayer(new Vec2f(-1.0f, 0.0f));
+			break;
+		case 87:
+			world.stopPlayer(new Vec2f(0.0f, -1.0f));
+			break;
+		case 68:
+			world.stopPlayer(new Vec2f(1.0f, 0.0f));
+			break;
+		case 83:
+			world.stopPlayer(new Vec2f(0.0f, 1.0f));
+		}
 	}
 
 	@Override

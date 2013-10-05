@@ -11,7 +11,7 @@ import cs195n.Vec2f;
 
 public class FastBullet extends Bullet {
 	
-	private final static float VELOCITY = 200;
+	private final static float VELOCITY = 400;
 	private final float DAMAGE = 50;
 	
 	private FastBulletSprite sprite;
