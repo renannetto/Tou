@@ -1,4 +1,4 @@
-package ro7.engine.sprites;
+package ro7.engine.sprites.shapes;
 
 import java.awt.Color;
 

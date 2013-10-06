@@ -4,11 +4,11 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import cs195n.Vec2f;
-import ro7.engine.sprites.AAB;
-import ro7.engine.sprites.Circle;
-import ro7.engine.sprites.CollidingShape;
-import ro7.engine.sprites.CompoundShape;
 import ro7.engine.sprites.Sprite;
+import ro7.engine.sprites.shapes.AAB;
+import ro7.engine.sprites.shapes.Circle;
+import ro7.engine.sprites.shapes.CollidingShape;
+import ro7.engine.sprites.shapes.CompoundShape;
 import ro7.engine.world.Collidable;
 
 public class PlayerSprite extends Sprite implements Collidable {

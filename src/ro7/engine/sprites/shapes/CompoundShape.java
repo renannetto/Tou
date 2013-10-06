@@ -1,4 +1,4 @@
-package ro7.engine.sprites;
+package ro7.engine.sprites.shapes;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -43,6 +43,16 @@ public class CompoundShape extends CollidingShape {
 	public boolean collidesAAB(AAB aab) {
 		for (CollidingShape shape : shapes) {
 			if (shape.collidesAAB(aab)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean collidesPolygon(Polygon polygon) {
+		for (CollidingShape shape : shapes) {
+			if (shape.collidesPolygon(polygon)) {
 				return true;
 			}
 		}

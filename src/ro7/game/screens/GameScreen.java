@@ -20,7 +20,8 @@ public class GameScreen extends Screen {
 
 	private Viewport viewport;
 	private TouWorld world;
-	private Message endMessage;
+	private Message lostMessage;
+	private Message winMessage;
 
 	private Set<Integer> pressedKeys;
 
@@ -42,7 +43,9 @@ public class GameScreen extends Screen {
 	public void onDraw(Graphics2D g) {
 		viewport.draw(g);
 		if (world.lost()) {
-			endMessage.draw(g);
+			lostMessage.draw(g);
+		} else if (world.won()) {
+			winMessage.draw(g);
 		}
 	}
 
@@ -60,9 +63,6 @@ public class GameScreen extends Screen {
 			switch (keyCode) {
 			case 27:
 				app.popScreen();
-			case 32:
-				world.changeWeapon();
-				break;
 			case 73:
 				world.shoot(new Vec2f(0.0f, -1.0f));
 				break;
@@ -80,6 +80,9 @@ public class GameScreen extends Screen {
 
 		int keyCode = e.getKeyCode();
 		switch (keyCode) {
+		case 32:
+			world.changeWeapon();
+			break;
 		case 65:
 			world.movePlayer(new Vec2f(-1.0f, 0.0f));
 			break;
@@ -176,9 +179,12 @@ public class GameScreen extends Screen {
 			float endX = windowSize.x / 10.0f;
 			float endY = windowSize.y / 2.0f;
 			int fontSize = windowSize.x / 24;
-			endMessage = new Message(
+			lostMessage = new Message(
 					"You lost! Press Esc to go back to title screen.",
 					fontSize, Color.WHITE, new Vec2f(endX, endY));
+			winMessage = new Message(
+					"You won! Press Esc to go back to title screen.", fontSize,
+					Color.WHITE, new Vec2f(endX, endY));
 		} catch (NullPointerException e) {
 			System.out.println("No window size defined");
 		}

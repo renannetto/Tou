@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 
-import ro7.engine.sprites.AAB;
+import ro7.engine.sprites.shapes.AAB;
 import cs195n.Vec2f;
 
 public class Viewport {

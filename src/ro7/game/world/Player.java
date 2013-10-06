@@ -3,7 +3,7 @@ package ro7.game.world;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import ro7.engine.sprites.CollidingShape;
+import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collidable;
 import ro7.engine.world.GameWorld;
 import ro7.engine.world.MovingEntity;
@@ -12,16 +12,18 @@ import cs195n.Vec2f;
 
 public class Player extends MovingEntity implements Collidable {
 
-	private static final float VELOCITY = 100f;
+	private static final float VELOCITY = 175f;
 	private final float FAST_SHOOT_DELAY = 0.1f;
+	private final float MEDIUM_SHOOT_DELAY = 0.15f;
 	private final float SLOW_SHOOT_DELAY = 0.2f;
 	private final Color FAST_BULLET_COLOR = Color.GREEN;
+	private final Color MEDIUM_BULLET_COLOR = Color.RED;
 	private final Color SLOW_BULLET_COLOR = Color.BLUE;
 
 	private PlayerSprite sprite;
 	private float lifepoints;
 
-	private boolean fastShoot;
+	private int bullet;
 	private float elapsedShootTime;
 
 	private Vec2f unnormDirection;
@@ -31,7 +33,7 @@ public class Player extends MovingEntity implements Collidable {
 		this.direction = new Vec2f(0.0f, 0.0f);
 
 		sprite = new PlayerSprite(position);
-		fastShoot = true;
+		bullet = 0;
 		this.lifepoints = 100;
 
 		this.unnormDirection = this.direction;
@@ -78,22 +80,32 @@ public class Player extends MovingEntity implements Collidable {
 	}
 
 	public void changeWeapon() {
-		fastShoot = !fastShoot;
+		bullet = (bullet+1)%3;
 	}
 
 	public Bullet shoot(Vec2f direction) {
-		if (fastShoot) {
+		switch (bullet) {
+		case 0:
 			if (elapsedShootTime > FAST_SHOOT_DELAY) {
 				elapsedShootTime = 0;
 				return new FastBullet((TouWorld) world, position,
 						FAST_BULLET_COLOR, direction);
 			}
-		} else {
+			break;
+		case 1:
+			if (elapsedShootTime > MEDIUM_SHOOT_DELAY) {
+				elapsedShootTime = 0;
+				return new MediumBullet((TouWorld) world, position,
+						MEDIUM_BULLET_COLOR, direction);
+			}
+			break;
+		case 2:
 			if (elapsedShootTime > SLOW_SHOOT_DELAY) {
 				elapsedShootTime = 0;
 				return new SlowBullet((TouWorld) world, position,
 						SLOW_BULLET_COLOR, direction);
 			}
+			break;
 		}
 		return null;
 	}
@@ -124,6 +136,14 @@ public class Player extends MovingEntity implements Collidable {
 	public void insideWorld() {
 		super.insideWorld();
 		sprite = new PlayerSprite(position);
+	}
+	
+	public Vec2f getPosition() {
+		return position;
+	}
+
+	public float getLifepoints() {
+		return lifepoints;
 	}
 
 }

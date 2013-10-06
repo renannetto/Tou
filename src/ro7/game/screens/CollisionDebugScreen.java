@@ -12,10 +12,11 @@ import java.util.List;
 import cs195n.Vec2f;
 import ro7.engine.Application;
 import ro7.engine.Screen;
-import ro7.engine.sprites.AAB;
-import ro7.engine.sprites.Circle;
-import ro7.engine.sprites.CollidingShape;
-import ro7.engine.sprites.CompoundShape;
+import ro7.engine.sprites.shapes.AAB;
+import ro7.engine.sprites.shapes.Circle;
+import ro7.engine.sprites.shapes.CollidingShape;
+import ro7.engine.sprites.shapes.CompoundShape;
+import ro7.engine.sprites.shapes.Polygon;
 
 public class CollisionDebugScreen extends Screen {
 
@@ -76,14 +77,21 @@ public class CollisionDebugScreen extends Screen {
 
 		CollidingShape shape;
 		if (button == 1) {
-			//shape = new Circle(new Vec2f(point.x, point.y),
-				//	Color.GREEN, Color.GREEN, 30.0f);
 			Vec2f pointVector = new Vec2f(point.x, point.y);
-			shape = new CompoundShape(pointVector, new Circle(pointVector, Color.GREEN, Color.GREEN, 30.0f),
-					new AAB(new Vec2f(point.x, point.y+30.0f), Color.GREEN, Color.GREEN, new Vec2f(50.0f, 100.0f)));
+			shape = new Polygon(pointVector, Color.GREEN,
+					pointVector, new Vec2f(pointVector.x - 20.0f,
+							pointVector.y - 20.0f), new Vec2f(
+							pointVector.x - 40.0f, pointVector.y));
 		} else {
-			shape = new AAB(new Vec2f(point.x, point.y),
-					Color.GREEN, Color.GREEN, new Vec2f(100.0f, 50.0f));
+			Vec2f pointVector = new Vec2f(point.x, point.y);
+			// shape = new AAB(new Vec2f(point.x, point.y), Color.GREEN,
+			// Color.GREEN, new Vec2f(50.0f, 25.0f));
+			 shape = new Circle(new Vec2f(point.x, point.y),
+						 Color.GREEN, Color.GREEN, 15.0f);
+//			 shape = new CompoundShape(pointVector, new Circle(pointVector,
+//				 Color.GREEN, Color.GREEN, 15.0f),
+//				 new AAB(new Vec2f(point.x, point.y+15.0f), Color.GREEN,
+//				 Color.GREEN, new Vec2f(25.0f, 50.0f)));
 		}
 		shapes.add(shape);
 	}

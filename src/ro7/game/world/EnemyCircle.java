@@ -3,7 +3,7 @@ package ro7.game.world;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import ro7.engine.sprites.CollidingShape;
+import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collidable;
 import ro7.engine.world.GameWorld;
 import ro7.game.sprites.EnemyCircleSprite;

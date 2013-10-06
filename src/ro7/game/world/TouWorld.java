@@ -9,28 +9,41 @@ import java.util.Set;
 import ro7.engine.world.GameWorld;
 import ro7.engine.world.Viewport;
 import ro7.game.sprites.TouBackground;
+import ro7.game.sprites.TouUI;
 import cs195n.Vec2f;
 
 public class TouWorld extends GameWorld {
 
-	private final int ENEMY_CREATION_TIME = 5;
+	private final int ENEMY_CIRCLE_TIME = 5;
+	private final int ENEMY_SQUARE_TIME = 7;
+	private final int ENEMY_TRIANGLE_TIME = 9;
+	private final int ENEMY_LIMIT = 10;
+	private final int ENEMIES_FOR_BOSS = 10;
 
 	private TouBackground background;
+	private TouUI ui;
 
 	private Player player;
+	private Boss boss;
 	private Set<Bullet> playerBullets;
 	private Set<Bullet> enemyBullets;
 	private Set<Enemy> enemies;
 
 	private List<Bullet> removeShoot;
 
-	private float elapsedTime;
+	private float elapsedTimeCircle;
+	private float elapsedTimeSquare;
+	private float elapsedTimeTriangle;
+
+	private int killedEnemies;
 
 	public TouWorld(Vec2f dimensions) {
 		super(dimensions);
 
 		background = new TouBackground(this, dimensions.sdiv(2.0f), dimensions);
 		entities.add(background);
+		ui = new TouUI(this, new Vec2f(0.0f, dimensions.y-20.0f), dimensions, 0, 100.0f);
+		entities.add(ui);
 
 		player = new Player(this, dimensions.sdiv(2));
 		entities.add(player);
@@ -39,6 +52,9 @@ public class TouWorld extends GameWorld {
 
 		playerBullets = new HashSet<Bullet>();
 		enemyBullets = new HashSet<Bullet>();
+
+		elapsedTimeCircle = 0;
+		killedEnemies = 0;
 	}
 
 	@Override
@@ -56,11 +72,20 @@ public class TouWorld extends GameWorld {
 		createEnemy(nanoseconds);
 		checkCollisions();
 		checkAlive();
+		if (killedEnemies >= ENEMIES_FOR_BOSS && boss == null) {
+			createBoss();
+		}
 
 		for (Bullet bullet : removeShoot) {
 			playerBullets.remove(bullet);
 			enemyBullets.remove(bullet);
 		}
+	}
+
+	private void createBoss() {
+		boss = new Boss(this, dimensions.minus(dimensions.x / 2.0f,
+				dimensions.y));
+		entities.add(boss);
 	}
 
 	@Override
@@ -77,8 +102,11 @@ public class TouWorld extends GameWorld {
 
 	private void checkAlive() {
 		List<Enemy> deadEnemies = new ArrayList<Enemy>();
+		boolean updateUI = false;
 		for (Enemy enemy : enemies) {
 			if (!enemy.isAlive()) {
+				updateUI = true;
+				killedEnemies++;
 				deadEnemies.add(enemy);
 			}
 		}
@@ -88,8 +116,18 @@ public class TouWorld extends GameWorld {
 			entities.remove(entities.indexOf(enemy));
 		}
 
+		if (boss != null && !boss.isAlive() && entities.contains(boss)) {
+			entities.remove(entities.indexOf(boss));
+		}
+
 		if (!player.isAlive() && entities.contains(player)) {
 			entities.remove(entities.indexOf(player));
+		}
+		
+		if (updateUI) {
+			entities.remove(entities.indexOf(ui));
+			ui = new TouUI(this, new Vec2f(0.0f, dimensions.y-20.0f), dimensions, killedEnemies, player.getLifepoints());
+			entities.add(1, ui);
 		}
 	}
 
@@ -101,6 +139,11 @@ public class TouWorld extends GameWorld {
 					removeShoot(bullet);
 				}
 			}
+
+			if (boss != null && bullet.collides(boss)) {
+				boss.shooted(bullet);
+				removeShoot(bullet);
+			}
 		}
 
 		if (player.isAlive()) {
@@ -108,14 +151,18 @@ public class TouWorld extends GameWorld {
 				if (bullet.collides(player)) {
 					player.shooted(bullet);
 					removeShoot(bullet);
+					entities.remove(entities.indexOf(ui));
+					ui = new TouUI(this, new Vec2f(0.0f, dimensions.y-20.0f), dimensions, killedEnemies, player.getLifepoints());
+					entities.add(1, ui);
 				}
 			}
 		}
 	}
 
 	private void createEnemy(long nanoseconds) {
-		elapsedTime += nanoseconds / 1000000000.0f;
-		if (elapsedTime > ENEMY_CREATION_TIME && enemies.size() < 10) {
+		elapsedTimeCircle += nanoseconds / 1000000000.0f;
+		if (elapsedTimeCircle > ENEMY_CIRCLE_TIME
+				&& enemies.size() < ENEMY_LIMIT) {
 			Vec2f position = new Vec2f((float) (Math.random() * dimensions.x),
 					(float) (Math.random() * dimensions.y));
 
@@ -123,14 +170,32 @@ public class TouWorld extends GameWorld {
 			enemies.add(enemy);
 			entities.add(enemy);
 
-			position = new Vec2f((float) (Math.random() * dimensions.x),
+			elapsedTimeCircle = 0;
+		}
+
+		elapsedTimeSquare += nanoseconds / 1000000000.0f;
+		if (elapsedTimeSquare > ENEMY_SQUARE_TIME
+				&& enemies.size() < ENEMY_LIMIT) {
+			Vec2f position = new Vec2f((float) (Math.random() * dimensions.x),
 					(float) (Math.random() * dimensions.y));
 
-			enemy = new EnemySquare(this, position);
+			Enemy enemy = new EnemySquare(this, position);
 			enemies.add(enemy);
 			entities.add(enemy);
 
-			elapsedTime = 0;
+			elapsedTimeSquare = 0;
+		}
+
+		elapsedTimeTriangle += nanoseconds / 1000000000.0f;
+		if (elapsedTimeTriangle > ENEMY_TRIANGLE_TIME
+				&& enemies.size() < ENEMY_LIMIT) {
+			Vec2f position = new Vec2f((float) (Math.random() * dimensions.x),
+					(float) (Math.random() * dimensions.y));
+			Enemy enemy = new EnemyTriangle(this, position);
+			enemies.add(enemy);
+			entities.add(enemy);
+
+			elapsedTimeTriangle = 0;
 		}
 	}
 
@@ -173,13 +238,25 @@ public class TouWorld extends GameWorld {
 		return !player.isAlive();
 	}
 
+	public boolean won() {
+		return !boss.isAlive();
+	}
+
 	@Override
 	public void resize(Vec2f newSize) {
 		super.resize(newSize);
 		entities.remove(entities.indexOf(background));
+		entities.remove(entities.indexOf(ui));
 		background = new TouBackground(this, dimensions.sdiv(2.0f), dimensions);
 		entities.add(0, background);
+		ui = new TouUI(this, new Vec2f(0.0f, dimensions.y-20.0f), dimensions, killedEnemies, player.getLifepoints());
+		entities.add(1, ui);
 		player.insideWorld();
+	}
+
+	public Vec2f playerDirection(Vec2f position) {
+		Vec2f playerPosition = player.getPosition();
+		return playerPosition.minus(position);
 	}
 
 }

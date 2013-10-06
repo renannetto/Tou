@@ -6,25 +6,25 @@ import java.awt.Graphics2D;
 import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collidable;
 import ro7.engine.world.GameWorld;
-import ro7.game.sprites.EnemySquareSprite;
+import ro7.game.sprites.EnemyTriangleSprite;
 import cs195n.Vec2f;
 
-public class EnemySquare extends Enemy {
+public class EnemyTriangle extends Enemy {
 	
-	private final Color BULLET_COLOR = Color.ORANGE;
+	private final Color BULLET_COLOR = Color.CYAN;
+	
+	private EnemyTriangleSprite sprite;
 
-	private EnemySquareSprite sprite;
-
-	public EnemySquare(GameWorld world, Vec2f position) {
+	public EnemyTriangle(GameWorld world, Vec2f position) {
 		super(world, position);
 		
-		this.sprite = new EnemySquareSprite(position);
+		this.sprite = new EnemyTriangleSprite(position);
 	}
 	
 	@Override
 	public void update(long nanoseconds) {
 		super.update(nanoseconds);
-		sprite = new EnemySquareSprite(position);
+		sprite = new EnemyTriangleSprite(position);
 	}
 	
 	@Override
@@ -44,14 +44,14 @@ public class EnemySquare extends Enemy {
 
 	@Override
 	protected void shoot() {
-		Bullet bullet = new SlowBullet(world, position, BULLET_COLOR, direction);
+		Bullet bullet = new MediumBullet(world, position, BULLET_COLOR, direction);
 		((TouWorld)world).enemyShoot(bullet);
 	}
 	
 	@Override
 	public void insideWorld() {
 		super.insideWorld();
-		sprite = new EnemySquareSprite(position);
+		sprite = new EnemyTriangleSprite(position);
 	}
 
 }

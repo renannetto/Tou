@@ -11,7 +11,7 @@ public abstract class Enemy extends MovingEntity implements Collidable {
 	private final int SHOOT_TIME = 2;
 	private final static float VELOCITY = 50.0f;
 
-	private float lifepoints;
+	protected float lifepoints;
 	
 	private float elapsedMovingTime;
 	private float elapsedShootingTime;

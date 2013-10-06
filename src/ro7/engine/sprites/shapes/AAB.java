@@ -1,9 +1,10 @@
-package ro7.engine.sprites;
+package ro7.engine.sprites.shapes;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.List;
 
 import cs195n.Vec2f;
@@ -65,6 +66,33 @@ public class AAB extends SingleShape {
 		return minThis.x <= maxAAB.x && maxThis.x >= minAAB.x
 				&& minThis.y <= maxAAB.y && maxThis.y >= minAAB.y;
 	}
+	
+	@Override
+	public boolean collidesPolygon(Polygon polygon) {
+		if (!checkAxis(polygon) || !polygon.checkAxis(this)) {
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean checkAxis(Polygon polygon) {
+		Vec2f edgeY = new Vec2f(0.0f, -dimensions.y);
+		SeparatingAxis axis = new SeparatingAxis(new Vec2f(edgeY.y, -edgeY.x));
+		Range range1 = axis.project(this);
+		Range range2 = axis.project(polygon);
+		if (!range1.overlaps(range2)) {
+			return false;
+		}
+		
+		Vec2f edgeX = new Vec2f(-dimensions.x, 0.0f);
+		axis = new SeparatingAxis(new Vec2f(edgeX.y, -edgeX.x));
+		range1 = axis.project(this);
+		range2 = axis.project(polygon);
+		if (!range1.overlaps(range2)) {
+			return false;
+		}
+		return true;
+	}
 
 	@Override
 	public boolean collidesCompoundShape(CompoundShape compound) {
@@ -98,6 +126,15 @@ public class AAB extends SingleShape {
 	public Shape getShape() {
 		return new Rectangle2D.Float(position.x, position.y, dimensions.x,
 				dimensions.y);
+	}
+
+	public List<Vec2f> getPoints() {
+		List<Vec2f> points = new ArrayList<Vec2f>();
+		points.add(position);
+		points.add(position.plus(0.0f, dimensions.y));
+		points.add(position.plus(dimensions.x, dimensions.y));
+		points.add(position.plus(dimensions.x, 0.0f));
+		return points;
 	}
 
 }

@@ -1,7 +1,8 @@
-package ro7.engine.sprites;
+package ro7.engine.sprites.shapes;
 
 import java.awt.Color;
 
+import ro7.engine.sprites.Sprite;
 import cs195n.Vec2f;
 
 public abstract class CollidingShape extends Sprite {
@@ -15,6 +16,8 @@ public abstract class CollidingShape extends Sprite {
 	public abstract boolean collidesCircle(Circle circle);
 	
 	public abstract boolean collidesAAB(AAB aab);
+	
+	public abstract boolean collidesPolygon(Polygon polygon);
 	
 	public abstract boolean collidesCompoundShape(CompoundShape compound);
 	

@@ -1,4 +1,4 @@
-package ro7.engine.sprites;
+package ro7.engine.sprites.shapes;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -82,6 +82,35 @@ public class Circle extends SingleShape {
 		float distance = point.dist2(center);
 
 		return distance <= (this.radius * this.radius);
+	}
+	
+	@Override
+	public boolean collidesPolygon(Polygon polygon) {
+		if (!checkAxis(polygon) || !polygon.checkAxis(this)) {
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean checkAxis(Polygon polygon) {
+		List<Vec2f> points = polygon.getPoints();
+		Vec2f center = this.getCenter();
+		Vec2f closest = new Vec2f(Float.MAX_VALUE, Float.MAX_VALUE);
+		for (Vec2f point : points) {
+			Vec2f distance = point.minus(center);
+			if (distance.mag2() < closest.mag2()) {
+				closest = distance;
+			}
+		}
+		
+		SeparatingAxis axis = new SeparatingAxis(new Vec2f(closest.y, -closest.x));
+		Range range1 = axis.project(this);
+		Range range2 = axis.project(polygon);
+		if (!range1.overlaps(range2)) {
+			return false;
+		}
+		
+		return true;
 	}
 
 	@Override

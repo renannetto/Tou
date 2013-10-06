@@ -1,6 +1,6 @@
 package ro7.engine.world;
 
-import ro7.engine.sprites.CollidingShape;
+import ro7.engine.sprites.shapes.CollidingShape;
 
 public interface Collidable {
 	

@@ -10,8 +10,8 @@ import cs195n.Vec2f;
 import cs195n.Vec2i;
 import ro7.engine.Application;
 import ro7.engine.Screen;
-import ro7.engine.sprites.AAB;
 import ro7.engine.sprites.Message;
+import ro7.engine.sprites.shapes.AAB;
 
 public class TitleScreen extends Screen {
 

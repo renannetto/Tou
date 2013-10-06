@@ -4,9 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import cs195n.Vec2f;
-import ro7.engine.sprites.AAB;
-import ro7.engine.sprites.CollidingShape;
 import ro7.engine.sprites.Sprite;
+import ro7.engine.sprites.shapes.AAB;
+import ro7.engine.sprites.shapes.CollidingShape;
 import ro7.engine.world.Collidable;
 
 public class FastBulletSprite extends Sprite implements Collidable {
