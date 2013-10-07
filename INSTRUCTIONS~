@@ -15,5 +15,3 @@ Game screen:
    - K: shoot down
    - L: shoot right
  - Change shoot type pressing space. There are three shots, each one with different speeds and damage.
- - Press Esc to go back to title screen.
- - Once you have killed enough enemies, the boss will show up. Defeat the boss and you win the game.

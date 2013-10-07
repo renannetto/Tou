@@ -1,4 +1,4 @@
-Tou II README
+Tou I README
 
 Engine requirements:
  - Polygon Collision: there is a new CollidingShape in ro7.engine.sprites.shapes called Polygon which implements polygon collision detection. It uses SeparateAxis and Range as support classes, which are responsible by the shapes projection.
